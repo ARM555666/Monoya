@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mono-ya | ร้านสินค้ามือสอง</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --dark-blue: #0d1b2a;
+            --medium-dark-blue: #1d3557;
+            --main-bg-color: #1e2a38;
+            --card-bg-color: #283845;
+            --light-blue-green: #a8dadc;
+            --soft-white: #f1faee;
+            --text-color: #f0f0f0;
+            --primary-btn-color: #457b9d;
+            --primary-btn-hover: #1d3557;
+            --success-btn-color: #2a9d8f;
+            --success-btn-hover: #21867a;
+            --danger-color: #e63946;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--dark-blue);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            padding: 1rem 0;
+        }
+        .navbar-brand {
+            color: var(--light-blue-green) !important;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: 0.08em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+        }
+        .nav-link {
+            color: var(--light-blue-green) !important;
+            font-weight: 600;
+            margin-left: 1.5rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+        }
+        .nav-link:hover {
+            color: var(--soft-white) !important;
+            transform: translateY(-2px);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--soft-white);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Cart Icon */
+        .cart-icon {
+            font-size: 1.5rem;
+            margin-left: 1rem;
+        }
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            padding: 3px 7px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(230, 57, 70, 0.7);
+            transition: transform 0.2s ease;
+        }
+        .cart-icon:hover .cart-count {
+            transform: scale(1.1);
+        }
+
+        /* Header */
+        header.bg-light { /* Override Bootstrap default */
+            background-color: var(--medium-dark-blue) !important;
+            color: var(--soft-white) !important;
+            padding: 5rem 1rem;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+            border-bottom: 5px solid var(--dark-blue);
+        }
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        header p.lead {
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* Product Card */
+        .product-card {
+            background-color: var(--card-bg-color);
+            border-radius: 15px; /* เพิ่มความโค้งมน */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            overflow: hidden; /* เพื่อให้รูปภาพโค้งมนตาม card */
+        }
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8);
+        }
+        .product-card img {
+            object-fit: cover;
+            height: 250px; /* เพิ่มความสูงของรูป */
+            width: 100%;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .product-card .card-body {
+            padding: 1.5rem;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: calc(100% - 250px); /* ให้เนื้อหาครอบคลุมพื้นที่ที่เหลือ */
+        }
+        .product-card .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--soft-white);
+            margin-bottom: 0.5rem;
+        }
+        .product-card .card-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--light-blue-green);
+            margin-bottom: 1rem;
+        }
+        .btn-primary {
+            background-color: var(--primary-btn-color);
+            border: none;
+            font-weight: 600;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-btn-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+        }
+
+        /* Cart Section */
+        section#cart {
+            background-color: var(--card-bg-color) !important;
+            color: var(--text-color);
+            border-radius: 15px; /* เพิ่มความโค้งมน */
+            padding: 2.5rem 2rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+            margin-bottom: 4rem;
+        }
+        section#cart h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--soft-white);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .list-group-item {
+            background-color: var(--medium-dark-blue);
+            border: 1px solid var(--primary-btn-color);
+            color: var(--soft-white);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            padding: 1rem 1.25rem;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .list-group-item button.btn-danger {
+            background-color: var(--danger-color);
+            border: none;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .list-group-item button.btn-danger:hover {
+            background-color: #c2313d; /* Darker red on hover */
+        }
+        #cart-total {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light-blue-green);
+            display: block;
+            margin-top: 1.5rem;
+            text-align: right;
+        }
+        #cart-total::before {
+            content: 'รวมทั้งหมด: ';
+            color: var(--soft-white);
+            font-weight: 600;
+        }
+        section#cart h5 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--soft-white);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        input.form-control, select.form-select { /* Add select.form-select */
+            background-color: var(--main-bg-color);
+            border: 1px solid var(--primary-btn-color);
+            color: var(--text-color);
+            font-weight: 400;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        input.form-control::placeholder, select.form-select::placeholder { /* Add select.form-select */
+            color: rgba(var(--light-blue-green), 0.7);
+        }
+        input.form-control:focus, select.form-select:focus { /* Add select.form-select */
+            background-color: var(--medium-dark-blue);
+            border-color: var(--soft-white);
+            color: var(--soft-white);
+            box-shadow: 0 0 10px rgba(var(--light-blue-green), 0.5);
+            outline: none;
+        }
+        .btn-success {
+            background-color: var(--success-btn-color);
+            border: none;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin: 2rem auto 0 auto;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+        .btn-success:hover {
+            background-color: var(--success-btn-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Footer */
+        footer.bg-dark {
+            background-color: var(--dark-blue) !important;
+            color: var(--light-blue-green);
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            padding: 2.5rem 0;
+            border-top: 5px solid var(--medium-dark-blue);
+        }
+        footer p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        footer a.text-white { /* Targeting specific class for consistency */
+            color: var(--light-blue-green) !important;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        footer a.text-white:hover {
+            color: var(--success-btn-color) !important;
+            text-decoration: underline;
+        }
+        /* Custom styles for the login/register forms */
+        /* Removed styles specific to login/register forms as they are no longer present */
+        .text-danger {
+            color: var(--danger-color) !important;
+            font-weight: 600;
+        }
+        .text-success {
+            color: var(--success-btn-color) !important;
+            font-weight: 600;
+        }
+        /* Removed product-login-btn as it's no longer needed */
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">Mono-ya</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" href="#products">สินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#cart">ตะกร้าสินค้า</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://www.facebook.com/profile.php?id=61576894867037" target="_blank" rel="noopener noreferrer">
+                                <i class="bi bi-facebook"></i> Facebook
+                            </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-icon" href="#cart">
+                            🛒<span class="cart-count" id="cart-count">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-light text-center py-5">
+        <div class="container">
+            <h1 class="fw-bold">ยินดีต้อนรับสู่ Mono-ya</h1>
+            <p class="lead">ร้านขายสินค้ามือสอง คุณภาพดี คัดสรรมาเพื่อคุณในราคาที่คุ้มค่า</p>
+        </div>
+    </header>
+
+    <section id="products" class="py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5" style="color: var(--light-blue-green);">สินค้าแนะนำ</h2>
+            <div class="row g-4" id="productList">
+            </div>
+        </div>
+    </section>
+
+    <section id="cart" class="py-5">
+        <div class="container">
+            <h3 class="mb-4">ตะกร้าสินค้าของคุณ</h3>
+            <ul id="cart-items" class="list-group mb-3">
+            </ul>
+            <p><span id="cart-total">฿0</span></p>
+
+            <h5 class="mt-4">ข้อมูลลูกค้า</h5>
+            <input id="customer-name-order" class="form-control mb-2" placeholder="ชื่อของคุณ" />
+            <input id="customer-address" class="form-control mb-3" placeholder="ที่อยู่จัดส่ง" required />
+            <input id="customer-phone" class="form-control mb-4" placeholder="เบอร์ติดต่อ" required />
+
+            <h5 class="mt-4">ช่องทางการชำระเงิน</h5>
+            <div class="mb-3">
+                <label for="paymentMethod" class="form-label">เลือกวิธีการชำระเงิน:</label>
+                <select class="form-select" id="paymentMethod" onchange="togglePaymentFields()">
+                    <option value="">-- เลือกช่องทาง --</option>
+                    <option value="bankTransfer">โอนเงินผ่านธนาคาร</option>
+                    <option value="creditCard">บัตรเครดิต/เดบิต (จำลอง)</option>
+                </select>
+            </div>
+
+            <div id="bankTransferFields" style="display: none;">
+                <p class="text-center mt-3 mb-4" style="font-size: 1.1rem; color: var(--light-blue-green);">
+                    กรุณาโอนเงินเข้าบัญชีด้านล่างนี้ และแนบหลักฐานการโอนเมื่อยืนยันคำสั่งซื้อ
+                </p>
+                <div class="card p-3 mb-4" style="background-color: var(--medium-dark-blue);">
+                    <p class="mb-1"><strong>ธนาคาร:</strong> กรุงไทย</p>
+                    <p class="mb-1"><strong>ชื่อบัญชี:</strong> โมโน-ยา จำกัด</p>
+                    <p class="mb-1"><strong>เลขที่บัญชี:</strong> XXX-X-XXXXX-X</p>
+                    <p class="mb-0 text-muted" style="font-size: 0.9em;">(โปรดโอนยอดเงินตามจำนวนที่แสดงในตะกร้า)</p>
+                </div>
+                <div class="mb-3">
+                    <label for="bankSlip" class="form-label">แนบหลักฐานการโอนเงิน (รูปภาพ):</label>
+                    <input type="file" class="form-control" id="bankSlip" accept="image/*">
+                </div>
+            </div>
+
+            <div id="creditCardFields" style="display: none;">
+                <p class="text-center mt-3 mb-4 text-danger" style="font-size: 1rem;">
+                    **นี่คือการจำลองเท่านั้น ห้ามกรอกข้อมูลบัตรเครดิตจริง**
+                </p>
+                <div class="mb-3">
+                    <label for="cardNumber" class="form-label">หมายเลขบัตร (16 หลัก)</label>
+                    <input type="text" class="form-control" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" maxlength="16" pattern="[0-9]{16}" title="กรุณากรอกเฉพาะตัวเลข 16 หลัก">
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="expiryDate" class="form-label">วันหมดอายุ (MM/YY)</label>
+                        <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" maxlength="5" pattern="(0[1-9]|1[0-2])\/?([0-9]{2})" title="รูปแบบ: MM/YY">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="cvv" class="form-label">CVV (3-4 หลัก)</label>
+                        <input type="text" class="form-control" id="cvv" placeholder="XXX" maxlength="4" pattern="[0-9]{3,4}" title="กรุณากรอกเฉพาะตัวเลข 3 หรือ 4 หลัก">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="cardHolderName" class="form-label">ชื่อบนบัตร</label>
+                    <input type="text" class="form-control" id="cardHolderName" placeholder="ชื่อ-นามสกุล บนบัตร">
+                </div>
+            </div>
+            <p class="text-center mt-4" style="font-size: 1.1rem;">
+                ติดต่อเราผ่าน Facebook:
+                <a href="https://www.facebook.com/profile.php?id=61576894867037" target="_blank" rel="noopener noreferrer" style="color:var(--light-blue-green); text-decoration:underline;">
+                    https://www.facebook.com/profile.php?id=61576894867037
+                </a>
+            </p>
+
+            <button class="btn btn-success" onclick="placeOrder()">ยืนยันสั่งซื้อและชำระเงิน</button>
+        </div>
+    </section>
+
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5" style="color: var(--light-blue-green);">ติดต่อเรา</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-7">
+                    <div class="bg-dark p-4 rounded-3 shadow-lg" style="background-color: var(--card-bg-color) !important;">
+                        <p class="lead text-center mb-4">หากมีข้อสงสัยหรือต้องการข้อมูลเพิ่มเติม สามารถติดต่อเราได้ตามช่องทางด้านล่างนี้</p>
+                        <ul class="list-unstyled text-center mb-0">
+                            <li class="mb-3">
+                                <i class="bi bi-facebook me-2" style="font-size: 1.2rem; color: var(--light-blue-green);"></i>
+                                <a href="https://www.facebook.com/profile.php?id=61576894867037" target="_blank" rel="noopener noreferrer" class="text-white text-decoration-underline" style="font-size: 1.1rem;">
+                                    Mono-ya Facebook Page
+                                </a>
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-envelope-fill me-2" style="font-size: 1.2rem; color: var(--light-blue-green);"></i>
+                                <a href="mailto:monoya.shop@example.com" class="text-white text-decoration-underline" style="font-size: 1.1rem;">
+                                    monoya.shop@example.com
+                                </a>
+                            </li>
+                            <li class="mb-3">
+                                <i class="bi bi-phone-fill me-2" style="font-size: 1.2rem; color: var(--light-blue-green);"></i>
+                                <span class="text-white" style="font-size: 1.1rem;">
+                                    08X-XXX-XXXX
+                                </span>
+                            </li>
+                            <li class="mb-0">
+                                <i class="bi bi-geo-alt-fill me-2" style="font-size: 1.2rem; color: var(--light-blue-green);"></i>
+                                <span class="text-white" style="font-size: 1.1rem;">
+                                    ร้าน Mono-ya, ภูเก็ต, ประเทศไทย
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <p class="mb-1">&copy; 2025 Mono-ya. All rights reserved.</p>
+            <p class="mb-0">ออกแบบและพัฒนาโดยทีม Mono-ya</p>
+            <div class="mt-2">
+                <a href="https://www.facebook.com/profile.php?id=61576894867037" target="_blank" rel="noopener noreferrer" class="text-white mx-2">
+                    <i class="bi bi-facebook" style="font-size: 1.3rem;"></i>
+                </a>
+                <a href="#" class="text-white mx-2">
+                    <i class="bi bi-instagram" style="font-size: 1.3rem;"></i>
+                </a>
+                <a href="#" class="text-white mx-2">
+                    <i class="bi bi-line" style="font-size: 1.3rem;"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let cart = [];
+
+        // Discord Webhook URL - อัปเดตเป็น URL ล่าสุดที่คุณให้มาแล้ว
+        const DISCORD_WEBHOOK_URL = 'https://discordapp.com/api/webhooks/1382370148731715645/IOehL4wmkWJsK2NgY4gWnTwVxZ8VVsv364SufgRa7Hv4JsuWAORUQ8LLDmzqBzlJW87R';
+
+        // ข้อมูลสินค้า (ย้ายมาไว้ใน JavaScript เพื่อความง่ายในการจัดการและแสดงผล)
+        const products = [
+            { id: 1, name: 'เสื้อกันหนาว Essential', price: 5500, imageUrl: 'https://via.placeholder.com/400x250/1d3557/a8dadc?text=เสื้อกันหนาว' },
+            { id: 2, name: 'เสื้อยืด Oversize ดีไซน์เท่', price: 800, imageUrl: 'https://via.placeholder.com/400x250/1d3557/a8dadc?text=เสื้อยืด+Oversize' },
+            { id: 3, name: 'กางเกงยีนส์วินเทจ', price: 1200, imageUrl: 'https://via.placeholder.com/400x250/1d3557/a8dadc?text=กางเกงยีนส์' },
+            { id: 4, name: 'กระเป๋าแบรนด์เนม สภาพดี', price: 3500, imageUrl: 'https://via.placeholder.com/400x250/1d3557/a8dadc?text=กระเป๋า+แบรนด์' },
+            { id: 5, name: 'รองเท้าผ้าใบ Limited Edition', price: 2800, imageUrl: 'https://via.placeholder.com/400x250/1d3557/a8dadc?text=รองเท้า+ผ้าใบ' },
+            { id: 6, name: 'นาฬิกาข้อมือ Smart Watch', price: 1800, imageUrl: 'https://via.placeholder.com/400x250/1d3557/a8dadc?text=นาฬิกา+ข้อมือ' },
+        ];
+
+        // --- DOM Elements ---
+        const paymentMethodSelect = document.getElementById('paymentMethod');
+        const bankTransferFields = document.getElementById('bankTransferFields');
+        const creditCardFields = document.getElementById('creditCardFields');
+
+        // --- ฟังก์ชันเกี่ยวกับการแสดงผลสินค้า ---
+        function renderProducts() {
+            const productListDiv = document.getElementById('productList');
+            productListDiv.innerHTML = ''; // Clear existing products
+
+            products.forEach(product => {
+                const colDiv = document.createElement('div');
+                colDiv.className = 'col-lg-4 col-md-6';
+                colDiv.innerHTML = `
+                    <div class="card product-card">
+                        <img src="${product.imageUrl}" class="card-img-top" alt="${product.name}" />
+                        <div class="card-body">
+                            <h5 class="card-title">${product.name}</h5>
+                            <p class="card-text">฿${product.price.toLocaleString()}</p>
+                            <button class="btn btn-primary w-100" onclick="addToCart('${product.name}', ${product.price})">เพิ่มใส่ตะกร้า</button>
+                        </div>
+                    </div>
+                `;
+                productListDiv.appendChild(colDiv);
+            });
+        }
+
+        // --- ฟังก์ชันเกี่ยวกับการจัดการตะกร้าสินค้า ---
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCart();
+            alert(`เพิ่ม ${name} ลงในตะกร้าแล้ว!`);
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const cartCount = document.getElementById('cart-count');
+
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                const emptyMessage = document.createElement('li');
+                emptyMessage.className = 'list-group-item text-center text-muted';
+                emptyMessage.textContent = 'ไม่มีสินค้าในตะกร้า';
+                cartItems.appendChild(emptyMessage);
+            } else {
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    const li = document.createElement('li');
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center bg-secondary text-white';
+                    li.innerHTML = `
+                        <span>${item.name} - ฿${item.price.toLocaleString()}</span>
+                        <button class="btn btn-sm btn-danger" onclick="removeItem(${index})">ลบ</button>
+                    `;
+                    cartItems.appendChild(li);
+                });
+            }
+
+            cartTotal.textContent = `฿${total.toLocaleString()}`;
+            cartCount.textContent = cart.length;
+        }
+
+        function togglePaymentFields() {
+            const selectedMethod = paymentMethodSelect.value;
+            bankTransferFields.style.display = 'none';
+            creditCardFields.style.display = 'none';
+
+            if (selectedMethod === 'bankTransfer') {
+                bankTransferFields.style.display = 'block';
+            } else if (selectedMethod === 'creditCard') {
+                creditCardFields.style.display = 'block';
+            }
+        }
+
+        async function sendDiscordNotification(order) {
+            const embedFields = [
+                { name: 'ชื่อลูกค้า', value: order.customerName, inline: true },
+                { name: 'เบอร์ติดต่อ', value: order.customerPhone, inline: true },
+                { name: 'ที่อยู่จัดส่ง', value: order.customerAddress },
+                { name: 'ยอดรวม', value: `฿${order.total.toLocaleString()}`, inline: true },
+                { name: 'ช่องทางการชำระเงิน', value: order.payment.method, inline: true }
+            ];
+
+            // Add payment specific details
+            if (order.payment.method === 'Bank Transfer') {
+                embedFields.push({ name: 'หลักฐานการโอน', value: order.payment.attachment ? `[คลิกเพื่อดูรูปภาพ](${order.payment.attachment})` : 'ไม่มีหลักฐานการโอน', inline: false });
+            } else if (order.payment.method === 'Credit Card (Simulated)') {
+                embedFields.push(
+                    { name: 'หมายเลขบัตร (4 หลักสุดท้าย)', value: order.payment.cardNumber, inline: true },
+                    { name: 'ชื่อบนบัตร', value: order.payment.cardHolderName, inline: true }
+                );
+            }
+
+            const discordMessage = {
+                username: "Mono-ya Order Bot",
+                avatar_url: "https://via.placeholder.com/50/a8dadc/1d3557?text=🛒", // You can change this to a suitable icon
+                embeds: [
+                    {
+                        title: "🎉 คำสั่งซื้อใหม่จาก Mono-ya!",
+                        description: `มีคำสั่งซื้อใหม่เข้ามาแล้วเมื่อเวลา ${order.timestamp}`,
+                        color: 6917646, // Hex color for a nice green/blue (#69AADC converted to decimal)
+                        fields: embedFields,
+                        footer: {
+                            text: "โปรดตรวจสอบและดำเนินการโดยเร็วที่สุด"
+                        }
+                    }
+                ]
+            };
+
+            // Add product list to description if needed (or as a separate field)
+            let productList = order.items.map(item => `- ${item.name} (฿${item.price.toLocaleString()})`).join('\n');
+            if (productList) {
+                discordMessage.embeds[0].fields.splice(2, 0, { name: 'รายการสินค้า', value: productList, inline: false }); // Insert before address
+            }
+
+
+            try {
+                const response = await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(discordMessage),
+                });
+
+                if (response.ok) {
+                    console.log('Discord notification sent successfully!');
+                } else {
+                    console.error('Failed to send Discord notification:', response.status, response.statusText);
+                    const errorText = await response.text();
+                    console.error('Discord error response:', errorText);
+                    alert('เกิดข้อผิดพลาดในการส่งการแจ้งเตือนไปยัง Discord กรุณาตรวจสอบคอนโซล');
+                }
+            } catch (error) {
+                console.error('Error sending Discord notification:', error);
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อกับ Discord กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต');
+            }
+        }
+
+
+        async function placeOrder() {
+            const name = document.getElementById('customer-name-order').value.trim();
+            const address = document.getElementById('customer-address').value.trim();
+            const phone = document.getElementById('customer-phone').value.trim();
+            const paymentMethod = paymentMethodSelect.value;
+            const orderTotal = cart.reduce((sum, item) => sum + item.price, 0);
+
+            if (cart.length === 0) {
+                alert('กรุณาเพิ่มสินค้าในตะกร้าก่อนทำการสั่งซื้อ');
+                return;
+            }
+            if (!name || !address || !phone) {
+                alert('กรุณากรอกข้อมูลลูกค้าให้ครบถ้วน (ชื่อ, ที่อยู่, เบอร์ติดต่อ)');
+                return;
+            }
+            if (!paymentMethod) {
+                alert('กรุณาเลือกช่องทางการชำระเงิน');
+                return;
+            }
+
+            let paymentDetails = {};
+            let attachmentUrl = null; // สำหรับเก็บ URL ของรูปภาพหลักฐานการโอน
+
+            if (paymentMethod === 'bankTransfer') {
+                const bankSlipFile = document.getElementById('bankSlip').files[0];
+                if (!bankSlipFile) {
+                    alert('กรุณาแนบหลักฐานการโอนเงิน');
+                    return;
+                }
+                // Simulate file upload and get URL (in a real app, this would be an API call)
+                // For a live site, you'd upload this file to a server and get a publicly accessible URL.
+                // For local testing, URL.createObjectURL creates a temporary local URL.
+                attachmentUrl = URL.createObjectURL(bankSlipFile);
+                paymentDetails = { method: 'Bank Transfer', attachment: attachmentUrl };
+            } else if (paymentMethod === 'creditCard') {
+                const cardNumber = document.getElementById('cardNumber').value.trim();
+                const expiryDate = document.getElementById('expiryDate').value.trim();
+                const cvv = document.getElementById('cvv').value.trim();
+                const cardHolderName = document.getElementById('cardHolderName').value.trim();
+
+                if (!cardNumber || !expiryDate || !cvv || !cardHolderName) {
+                    alert('กรุณากรอกข้อมูลบัตรเครดิตให้ครบถ้วน');
+                    return;
+                }
+                if (!/^[0-9]{16}$/.test(cardNumber)) {
+                    alert('หมายเลขบัตรต้องเป็นตัวเลข 16 หลัก');
+                    return;
+                }
+                if (!/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(expiryDate)) {
+                    alert('วันหมดอายุไม่ถูกต้อง (MM/YY)');
+                    return;
+                }
+                if (!/^[0-9]{3,4}$/.test(cvv)) {
+                    alert('CVV ต้องเป็นตัวเลข 3 หรือ 4 หลัก');
+                    return;
+                }
+                paymentDetails = {
+                    method: 'Credit Card (Simulated)',
+                    cardNumber: '************' + cardNumber.slice(-4), // Only show last 4 digits
+                    expiryDate: expiryDate,
+                    cvv: '***', // Mask CVV
+                    cardHolderName: cardHolderName
+                };
+            }
+
+            const order = {
+                customerName: name,
+                customerAddress: address,
+                customerPhone: phone,
+                items: cart,
+                total: orderTotal,
+                payment: paymentDetails,
+                timestamp: new Date().toLocaleString()
+            };
+
+            console.log('Order placed:', order);
+
+            // Send notification to Discord
+            await sendDiscordNotification(order);
+
+            // Here you would typically send `order` data to your backend server.
+            // For this example, we'll just simulate a successful order.
+            alert('คำสั่งซื้อของคุณได้รับการยืนยันเรียบร้อยแล้ว!\n\nเราจะติดต่อกลับไปเพื่อยืนยันข้อมูลการจัดส่ง\n\nขอบคุณที่ใช้บริการ Mono-ya!');
+
+            // Clear cart after successful order
+            cart = [];
+            updateCart();
+            document.getElementById('customer-name-order').value = '';
+            document.getElementById('customer-address').value = '';
+            document.getElementById('customer-phone').value = '';
+            paymentMethodSelect.value = ''; // Reset payment method selection
+            togglePaymentFields(); // Hide payment fields
+            document.getElementById('bankSlip').value = ''; // Clear file input
+            document.getElementById('cardNumber').value = '';
+            document.getElementById('expiryDate').value = '';
+            document.getElementById('cvv').value = '';
+            document.getElementById('cardHolderName').value = '';
+        }
+
+        // --- Initial render when the page loads ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            updateCart();
+            togglePaymentFields(); // Ensure payment fields are hidden initially
+        });
+    </script>
+</body>
+</html>
